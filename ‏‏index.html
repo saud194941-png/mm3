@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مسابقة متأهبون 3 – المرحلة الثانية</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&amp;family=Tajawal:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        kufi: ['Noto Kufi Arabic', 'sans-serif'],
+        taj: ['Tajawal', 'sans-serif'],
+      },
+      colors: {
+        forest: '#1a4d3e',
+        forestLight: '#2a6b55',
+        gold: '#c5a355',
+        goldLight: '#dfc47a',
+        cream: '#f8f6f0',
+        slate: '#3a3a3a',
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(197, 163, 85, 0.4); }
+  50% { box-shadow: 0 0 0 16px rgba(197, 163, 85, 0); }
+}
+
+.anim-fade { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.anim-fade.visible { opacity: 1; transform: translateY(0); }
+.anim-scale { opacity: 0; transform: scale(0.9); transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.anim-scale.visible { opacity: 1; transform: scale(1); }
+
+.hero-pattern {
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(197,163,85,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(26,77,62,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(197,163,85,0.05) 0%, transparent 50%);
+}
+
+.geo-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a4d3e' fill-opacity='0.03'%3E%3Cpath d='M30 0l30 30-30 30L0 30z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.gold-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c5a355, transparent);
+}
+
+.cta-btn {
+  animation: pulse-gold 2.5s infinite;
+  background: linear-gradient(135deg, #c5a355, #dfc47a, #c5a355);
+  background-size: 200% auto;
+  transition: all 0.3s ease;
+}
+.cta-btn:hover {
+  animation: shimmer 2s linear infinite;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(197,163,85,0.4);
+}
+
+.school-card {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.school-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(26,77,62,0.12);
+}
+
+.track-card {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.track-card:hover {
+  transform: translateY(-3px);
+}
+
+.section-divider {
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, #1a4d3e, #c5a355);
+  border-radius: 2px;
+  margin: 0 auto;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto bg-cream font-taj geo-pattern" style="background-color: #f8f6f0;"><!-- Audio Player -->
+   <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full px-6 py-3 shadow-lg" style="background: rgba(26,77,62,0.95); backdrop-filter: blur(10px);">
+    <button id="audio-toggle" class="p-2 rounded-full transition-all hover:scale-110" style="background: rgba(197,163,85,0.2);" aria-label="تشغيل/إيقاف الموسيقى"> <i id="audio-icon" data-lucide="volume-2" style="width:20px;height:20px;color:#dfc47a;"></i> </button> <input id="audio-volume" type="range" min="0" max="100" value="15" class="w-20" style="accent-color: #c5a355;">
+    <audio id="bg-audio" preload="metadata" loop>
+     <source src="" type="audio/mpeg">
+    </audio>
+   </div><!-- Hero Section -->
+   <header class="hero-pattern relative overflow-hidden" style="background-color: #f8f6f0;">
+    <div class="absolute top-0 left-0 w-full h-1" style="background: linear-gradient(90deg, #1a4d3e, #c5a355, #1a4d3e);"></div>
+    <div class="max-w-5xl mx-auto px-8 pt-28 pb-28">
+     <div class="flex flex-col md:flex-row items-center justify-between gap-12 mb-10"><!-- Logos Left Side -->
+      <div class="anim-scale flex items-center justify-center gap-6 flex-shrink-0 order-1 md:order-1">
+       <img id="ministry-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGK4Cbk1wK50C-rWeNrY3bDioJJEaz1_Is5w&amp;s" alt="شعار وزارة التعليم" style="width: 120px; height: 120px; object-fit: contain; border-radius: 50%; border: 3px solid #c5a355; padding: 6px; background: white;" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(135deg, #1a4d3e, #c5a355)'; this.alt='شعار وزارة التعليم';">
+       <div style="width: 3px; height: 100px; background: linear-gradient(180deg, transparent, #c5a355, transparent);"></div><img id="event-logo" src="https://i.ibb.co/0p8Kkpbg/Whats-App-Image-2026-04-13-at-12-00-45-PM.jpg" alt="شعار مسابقة متأهبون 3" style="width: 120px; height: 120px; object-fit: contain; border-radius: 50%; border: 4px solid #c5a355; padding: 8px; background: white;" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(135deg, #1a4d3e, #c5a355)'; this.alt='شعار المسابقة';">
+      </div><!-- Content Right Side -->
+      <div class="flex-1 text-right md:text-right order-2 md:order-2">
+       <p class="anim-fade text-base font-medium tracking-wider mb-4" style="color: #c5a355; animation-delay: 0.1s;" id="ministry-name">الإدارة العامة للتعليم بمحافظة جدة</p>
+       <h1 id="hero-title" class="anim-fade font-kufi text-4xl md:text-5xl font-800 leading-tight mb-3" style="color: #1a4d3e; animation-delay: 0.2s;">مسابقة متأهبون 3</h1>
+       <p class="anim-fade text-2xl font-kufi font-700 mb-6" style="color: #c5a355; animation-delay: 0.25s;">المرحلة الثانية</p>
+       <div class="gold-line w-40 ml-auto md:ml-0 mb-6 anim-fade" style="animation-delay: 0.3s;"></div>
+       <div class="flex items-center justify-end gap-4 mb-4">
+        <div class="text-right flex-1">
+         <p class="anim-fade text-lg md:text-xl mb-2" style="color: #3a3a3a; animation-delay: 0.35s;">المدرسة المستضيفة: <strong id="hero-school" class="font-kufi" style="color: #1a4d3e;">الثانوية الثانية والعشرون</strong></p>
+         <p class="anim-fade text-base" style="color: #666; animation-delay: 0.4s;">مديرة المدرسة: <span id="hero-principal" class="font-medium" style="color: #3a3a3a;">أ. ابتسام الثقفي</span></p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </header><!-- Royal Words Section -->
+   <section class="py-20 px-6" style="background: linear-gradient(135deg, #f8f6f0 0%, #eee9dd 100%);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="anim-fade font-kufi text-2xl font-800 mb-4" style="color: #1a4d3e;">كلمات قيادتنا الحكيمة</h2>
+      <div class="section-divider mb-6 anim-fade"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <!-- King's Words -->
+      <div class="anim-fade rounded-xl p-12 border" style="background: #ffffff; border-color: #e8e4da;">
+       <div class="mb-10 flex justify-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/%D8%A7%D9%84%D8%B5%D9%88%D8%B1%D8%A9_%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%D8%A9_%D9%84%D8%AE%D8%A7%D8%AF%D9%85_%D8%A7%D9%84%D8%AD%D8%B1%D9%85%D9%8A%D9%86_%D8%A7%D9%84%D8%B4%D8%B1%D9%8A%D9%81%D9%8A%D9%86_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%B3%D9%84%D9%85%D8%A7%D9%86_%D8%A8%D9%86_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2_%D8%A2%D9%84_%D8%B3%D8%B9%D9%88%D8%AF.jpg/960px-%D8%A7%D9%84%D8%B5%D9%88%D8%B1%D8%A9_%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%D8%A9_%D9%84%D8%AE%D8%A7%D8%AF%D9%85_%D8%A7%D9%84%D8%AD%D8%B1%D9%85%D9%8A%D9%86_%D8%A7%D9%84%D8%B4%D8%B1%D9%8A%D9%81%D9%8A%D9%86_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%B3%D9%84%D9%85%D8%A7%D9%86_%D8%A8%D9%86_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2_%D8%A2%D9%84_%D8%B3%D8%B9%D9%88%D8%AF.jpg" alt="خادم الحرمين الشريفين الملك سلمان بن عبدالعزيز" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid #c5a355;" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(135deg, #1a4d3e, #c5a355)'; this.alt='الملك سلمان';">
+       </div>
+       <p class="font-kufi font-700 text-lg mb-7 text-center" style="color: #1a4d3e;">خادم الحرمين الشريفين<br>
+         الملك سلمان بن عبدالعزيز آل سعود</p>
+       <div class="bg-gradient-to-b from-transparent to-transparent border-r-4 pr-6" style="border-color: #c5a355;">
+        <p class="text-base leading-relaxed italic" style="color: #3a3a3a;">"إن التعليم ركيزة أساسية تتحقق بها تطلعات شعبنا نحو التقدم والازدهار والتنمية والرقي الحضاري في المعارف والعلوم النافعة، والشباب هم أمل الأمة وعدة المستقبل"</p>
+       </div>
+      </div>
+      <div class="anim-fade rounded-xl p-12 border" style="background: #ffffff; border-color: #e8e4da; animation-delay: 0.1s;">
+       <div class="mb-10 flex justify-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/%D8%A7%D9%84%D8%B5%D9%88%D8%B1%D8%A9_%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%D8%A9_%D9%84%D9%84%D8%A3%D9%85%D9%8A%D8%B1_%D9%85%D8%AD%D9%85%D8%AF_%D8%A8%D9%86_%D8%B3%D9%84%D9%85%D8%A7%D9%86_%D8%A8%D9%86_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2_%D8%A2%D9%84_%D8%B3%D8%B9%D9%88%D8%AF_%28%D9%85%D9%82%D8%B5%D9%88%D8%B5%D8%A9%29.jpg/960px-%D8%A7%D9%84%D8%B5%D9%88%D8%B1%D8%A9_%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%D8%A9_%D9%84%D9%84%D8%A3%D9%85%D9%8A%D8%B1_%D9%85%D8%AD%D9%85%D8%AF_%D8%A8%D9%86_%D8%B3%D9%84%D9%85%D8%A7%D9%86_%D8%A8%D9%86_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2_%D8%A2%D9%84_%D8%B3%D8%B9%D9%88%D8%AF_%28%D9%85%D9%82%D8%B5%D9%88%D8%B5%D8%A9%29.jpg" alt="صاحب السمو الملكي الأمير محمد بن سلمان" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid #c5a355;" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(135deg, #1a4d3e, #c5a355)'; this.alt='ولي العهد';">
+       </div>
+       <p class="font-kufi font-700 text-lg mb-7 text-center" style="color: #1a4d3e;">صاحب السمو الملكي<br>
+         الأمير محمد بن سلمان<br><span class="text-sm font-medium">ولي العهد - رئيس مجلس الوزراء</span></p>
+       <div class="bg-gradient-to-b from-transparent to-transparent border-r-4 pr-6" style="border-color: #c5a355;">
+        <p class="text-base leading-relaxed italic" style="color: #3a3a3a;">"إن طموحنا هو أن نكون ضمن أفضل 30 إلى 20 نظام تعليمي ونملك كل شيء لنحقق ذلك"</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Dates Section -->
+   <section class="py-20 px-6" style="background-color: #1a4d3e;">
+    <div class="max-w-5xl mx-auto">
+     <h2 class="anim-fade font-kufi text-2xl font-800 text-center mb-14" style="color: #f8f6f0;">مواعيد المسابقة</h2>
+     <div class="flex justify-center">
+      <div class="anim-scale track-card rounded-xl p-10 text-center border w-full max-w-sm" style="background: rgba(248,246,240,0.08); border-color: rgba(197,163,85,0.4);">
+       <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="background: rgba(197,163,85,0.2);"><i data-lucide="flask-conical" style="width:28px;height:28px;color:#dfc47a;"></i>
+       </div>
+       <h3 class="font-kufi text-xl font-800 mb-4" style="color: #dfc47a;">المسار العلمي</h3>
+       <p class="text-3xl font-kufi font-900" style="color: #f8f6f0;">١٢ / ١١ / ١٤٤٧ هـ</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Tracks Section -->
+   <section class="py-20 px-6" style="background: linear-gradient(135deg, #f8f6f0 0%, #eee9dd 100%);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="anim-fade font-kufi text-2xl font-800 mb-4" style="color: #1a4d3e;">المسارات</h2>
+      <div class="section-divider mb-6 anim-fade"></div>
+      <p class="text-sm" style="color: #666;">المواد المشمولة في المسابقة</p>
+     </div>
+     <div class="space-y-14"><!-- Scientific Track -->
+      <div class="anim-fade">
+       <div class="flex items-center gap-4 mb-10">
+        <div class="flex-1 h-0.5" style="background: linear-gradient(90deg, transparent, #1a4d3e);"></div>
+        <div class="flex items-center gap-3 px-4">
+         <i data-lucide="flask-conical" style="width:24px;height:24px;color:#1a4d3e;"></i>
+         <h3 class="font-kufi text-xl font-800" style="color: #1a4d3e;">المسار العلمي</h3>
+        </div>
+        <div class="flex-1 h-0.5" style="background: linear-gradient(90deg, #1a4d3e, transparent);"></div>
+       </div>
+       <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="subject-card group rounded-xl p-10 text-center transition-all duration-500 hover:shadow-2xl border-2" style="background: linear-gradient(135deg, #ffffff 0%, #f8f6f0 100%); border-color: #e8e4da;">
+         <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 group-hover:scale-110 transition-all duration-500" style="background: linear-gradient(135deg, rgba(26,77,62,0.1) 0%, rgba(197,163,85,0.15) 100%);">
+          <div class="text-5xl">
+           📐
+          </div>
+         </div>
+         <h4 class="font-kufi font-700 text-lg mb-4" style="color: #1a4d3e;">الرياضيات</h4>
+         <div class="h-1 w-10 mx-auto rounded" style="background: #c5a355; opacity: 0; group-hover:opacity-100; transition: opacity 0.3s;"></div>
+        </div>
+        <div class="subject-card group rounded-xl p-10 text-center transition-all duration-500 hover:shadow-2xl border-2" style="background: linear-gradient(135deg, #ffffff 0%, #f8f6f0 100%); border-color: #e8e4da;">
+         <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 group-hover:scale-110 transition-all duration-500" style="background: linear-gradient(135deg, rgba(26,77,62,0.1) 0%, rgba(197,163,85,0.15) 100%);">
+          <div class="text-5xl">
+           ⚛️
+          </div>
+         </div>
+         <h4 class="font-kufi font-700 text-lg mb-4" style="color: #1a4d3e;">الفيزياء</h4>
+         <div class="h-1 w-10 mx-auto rounded" style="background: #c5a355; opacity: 0; group-hover:opacity-100; transition: opacity 0.3s;"></div>
+        </div>
+        <div class="subject-card group rounded-xl p-10 text-center transition-all duration-500 hover:shadow-2xl border-2" style="background: linear-gradient(135deg, #ffffff 0%, #f8f6f0 100%); border-color: #e8e4da;">
+         <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 group-hover:scale-110 transition-all duration-500" style="background: linear-gradient(135deg, rgba(26,77,62,0.1) 0%, rgba(197,163,85,0.15) 100%);">
+          <div class="text-5xl">
+           🧪
+          </div>
+         </div>
+         <h4 class="font-kufi font-700 text-lg mb-4" style="color: #1a4d3e;">الكيمياء</h4>
+         <div class="h-1 w-10 mx-auto rounded" style="background: #c5a355; opacity: 0; group-hover:opacity-100; transition: opacity 0.3s;"></div>
+        </div>
+        <div class="subject-card group rounded-xl p-10 text-center transition-all duration-500 hover:shadow-2xl border-2" style="background: linear-gradient(135deg, #ffffff 0%, #f8f6f0 100%); border-color: #e8e4da;">
+         <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 group-hover:scale-110 transition-all duration-500" style="background: linear-gradient(135deg, rgba(26,77,62,0.1) 0%, rgba(197,163,85,0.15) 100%);">
+          <div class="text-5xl">
+           🦠
+          </div>
+         </div>
+         <h4 class="font-kufi font-700 text-lg mb-4" style="color: #1a4d3e;">الأحياء</h4>
+         <div class="h-1 w-10 mx-auto rounded" style="background: #c5a355; opacity: 0; group-hover:opacity-100; transition: opacity 0.3s;"></div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Schools Section -->
+   <section class="py-16 px-6" style="background-color: #f8f6f0;">
+    <div class="max-w-3xl mx-auto text-center">
+     <h2 class="anim-fade font-kufi text-xl font-700 mb-3" style="color: #1a4d3e;">المدارس المشاركة</h2>
+     <div class="section-divider mb-12 anim-fade"></div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-7">
+      <div class="anim-fade school-card rounded-xl p-6 border flex items-center gap-4" style="background: #f8f6f0; border-color: #e8e4da;">
+       <div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(26,77,62,0.08);"><i data-lucide="school" style="width:18px;height:18px;color:#1a4d3e;"></i>
+       </div><span class="font-medium text-base" style="color: #3a3a3a;">الثانوية الخامسة عشر بعد المائة</span>
+      </div>
+      <div class="anim-fade school-card rounded-xl p-6 border flex items-center gap-4" style="background: #f8f6f0; border-color: #e8e4da;">
+       <div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(26,77,62,0.08);"><i data-lucide="school" style="width:18px;height:18px;color:#1a4d3e;"></i>
+       </div><span class="font-medium text-base" style="color: #3a3a3a;">ثانوية رفيدة الأنصارية</span>
+      </div>
+      <div class="anim-fade school-card rounded-xl p-6 border flex items-center gap-4" style="background: #f8f6f0; border-color: #e8e4da;">
+       <div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(26,77,62,0.08);"><i data-lucide="school" style="width:18px;height:18px;color:#1a4d3e;"></i>
+       </div><span class="font-medium text-base" style="color: #3a3a3a;">الثانوية السابعة والخمسون</span>
+      </div>
+      <div class="anim-fade school-card rounded-xl p-6 border flex items-center gap-4" style="background: #f8f6f0; border-color: #e8e4da;">
+       <div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(26,77,62,0.08);"><i data-lucide="school" style="width:18px;height:18px;color:#1a4d3e;"></i>
+       </div><span class="font-medium text-base" style="color: #3a3a3a;">الثانوية الحادية والعشرون</span>
+      </div>
+      <div class="anim-fade school-card rounded-xl p-6 border flex items-center gap-4" style="background: #f8f6f0; border-color: #e8e4da;">
+       <div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(26,77,62,0.08);"><i data-lucide="school" style="width:18px;height:18px;color:#1a4d3e;"></i>
+       </div><span class="font-medium text-base" style="color: #3a3a3a;">الثانوية العاشرة بعد المائة</span>
+      </div>
+      <div class="anim-fade school-card rounded-xl p-6 border flex items-center gap-4" style="background: #f8f6f0; border-color: #e8e4da;">
+       <div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(26,77,62,0.08);"><i data-lucide="school" style="width:18px;height:18px;color:#1a4d3e;"></i>
+       </div><span class="font-medium text-base" style="color: #3a3a3a;">الثانوية الخامسة</span>
+      </div>
+      <div class="anim-fade school-card rounded-xl p-6 border flex items-center gap-4" style="background: #f8f6f0; border-color: #e8e4da;">
+       <div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(26,77,62,0.08);"><i data-lucide="school" style="width:18px;height:18px;color:#1a4d3e;"></i>
+       </div><span class="font-medium text-base" style="color: #3a3a3a;">الثانوية الثلاثون</span>
+      </div>
+      <div class="anim-fade school-card rounded-xl p-6 border flex items-center gap-4" style="background: #f8f6f0; border-color: #e8e4da;">
+       <div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(26,77,62,0.08);"><i data-lucide="school" style="width:18px;height:18px;color:#1a4d3e;"></i>
+       </div><span class="font-medium text-base" style="color: #3a3a3a;">الثانوية الرابعة والأربعون</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- School Location Section -->
+   <section class="py-16 px-6" style="background-color: #ffffff;">
+    <div class="max-w-3xl mx-auto text-center">
+     <h2 class="anim-fade font-kufi text-xl font-700 mb-3" style="color: #1a4d3e;">موقع المدرسة والدليل الإرشادي</h2>
+     <div class="section-divider mb-12 anim-fade"></div>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-8"><a id="location-btn" href="https://maps.app.goo.gl/7WfYyvotTHaPfZx18?g_st=ic" target="_blank" rel="noopener noreferrer" class="group inline-flex flex-col items-center gap-6 rounded-xl p-12 border transition-all duration-300 no-underline flex-1" style="background: #f8f6f0; border-color: #e8e4da; text-decoration: none;">
+       <div class="inline-flex items-center justify-center w-20 h-20 rounded-full group-hover:scale-110 transition-transform" style="background: rgba(26,77,62,0.08);"><i data-lucide="map-pin" style="width:36px;height:36px;color:#1a4d3e;"></i>
+       </div>
+       <div>
+        <h3 class="font-kufi text-xl font-700 mb-2" style="color: #1a4d3e;">عرض الموقع الجغرافي</h3>
+        <p class="text-base group-hover:text-blue-600 transition-colors" style="color: #666;">اضغط لفتح خريطة موقع المدرسة</p>
+       </div></a> <a id="guide-btn" href="https://2u.pw/iqg6Z4" target="_blank" rel="noopener noreferrer" class="group inline-flex flex-col items-center gap-6 rounded-xl p-12 border transition-all duration-300 no-underline flex-1" style="background: #f8f6f0; border-color: #e8e4da; text-decoration: none;">
+       <div class="inline-flex items-center justify-center w-20 h-20 rounded-full group-hover:scale-110 transition-transform" style="background: rgba(197,163,85,0.1);"><i data-lucide="file-text" style="width:36px;height:36px;color:#c5a355;"></i>
+       </div>
+       <div>
+        <h3 class="font-kufi text-xl font-700 mb-2" style="color: #1a4d3e;">الدليل الإرشادي</h3>
+        <p class="text-base group-hover:text-blue-600 transition-colors" style="color: #666;">اضغط لتحميل الدليل</p>
+       </div></a>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-10 px-6" style="background-color: #1a4d3e;">
+    <div class="max-w-4xl mx-auto text-center space-y-5">
+     <p class="text-sm font-kufi font-700" style="color: #dfc47a;">لجنة التحصيل الدراسي</p>
+     <p class="text-xs" style="color: rgba(248,246,240,0.7);">مدرسة الثانوية الثانية والعشرون – الإدارة العامة للتعليم بمحافظة جدة – مسابقة متأهبون 3 ١٤٤٧ هـ</p>
+     <div class="pt-4 border-t" style="border-color: rgba(197,163,85,0.3);">
+      <p class="text-xs" style="color: rgba(248,246,240,0.8);">إعداد وتصميم: أ. بدرية الفارسي - أ. هدى القحطاني - أ. نادية الخطابي</p>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Audio controls
+const audio = document.getElementById('bg-audio');
+const toggleBtn = document.getElementById('audio-toggle');
+const volumeSlider = document.getElementById('audio-volume');
+
+// Start playing automatically at low volume
+audio.volume = 0.15;
+audio.play().catch(() => {});
+
+// Toggle play/pause
+toggleBtn.addEventListener('click', () => {
+  if (audio.paused) {
+    audio.play();
+    toggleBtn.setAttribute('aria-label', 'إيقاف الموسيقى');
+  } else {
+    audio.pause();
+    toggleBtn.setAttribute('aria-label', 'تشغيل الموسيقى');
+  }
+});
+
+// Volume control
+volumeSlider.addEventListener('input', (e) => {
+  audio.volume = e.target.value / 100;
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.anim-fade, .anim-scale').forEach(el => observer.observe(el));
+
+// Lucide icons
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  event_title: 'مسابقة متأهبون 3 – المرحلة الثانية',
+  ministry_name: 'الإدارة العامة للتعليم بمحافظة جدة',
+  school_name: 'الثانوية الثانية والعشرون',
+  principal_name: 'أ. ابتسام الثقفي',
+  school_location: 'https://2u.pw/XaVHwR',
+  background_color: '#f8f6f0',
+  surface_color: '#ffffff',
+  text_color: '#3a3a3a',
+  primary_color: '#1a4d3e',
+  accent_color: '#c5a355',
+  font_family: 'Noto Kufi Arabic',
+  font_size: 16,
+};
+
+async function onConfigChange(config) {
+  const c = key => config[key] || defaultConfig[key];
+
+  document.getElementById('ministry-name').textContent = c('ministry_name');
+  document.getElementById('hero-title').textContent = c('event_title');
+  document.getElementById('hero-school').textContent = c('school_name');
+  document.getElementById('hero-principal').textContent = c('principal_name');
+  document.getElementById('location-btn').href = c('school_location') || '#';
+
+  // Colors
+  const bg = c('background_color');
+  const surface = c('surface_color');
+  const text = c('text_color');
+  const primary = c('primary_color');
+  const accent = c('accent_color');
+
+  document.getElementById('app-wrapper').style.backgroundColor = bg;
+  document.querySelector('header').style.backgroundColor = bg;
+  document.querySelectorAll('section')[2].style.backgroundColor = bg;
+
+  // Primary (forest) elements
+  document.getElementById('hero-title').style.color = primary;
+  document.getElementById('hero-school').style.color = primary;
+  document.querySelectorAll('h2').forEach(h => h.style.color = primary);
+  document.querySelectorAll('section')[0].style.backgroundColor = primary;
+  document.querySelector('footer').style.backgroundColor = primary;
+
+  // Accent (gold)
+  document.querySelectorAll('.cta-btn').forEach(b => {
+    b.style.background = `linear-gradient(135deg, ${accent}, ${c('accent_color')}dd, ${accent})`;
+    b.style.color = primary;
+  });
+
+  // Surface
+  document.querySelectorAll('section')[2].querySelector('section, div')
+  const surfaceCards = document.querySelectorAll('.school-card, section:nth-of-type(3) .rounded-xl');
+
+  // Text color
+  document.querySelectorAll('.font-medium').forEach(el => {
+    if (!el.closest('header') && !el.closest('.cta-btn')) el.style.color = text;
+  });
+
+  // Font
+  const font = c('font_family');
+  const baseFont = `${font}, Tajawal, sans-serif`;
+  document.querySelectorAll('.font-kufi').forEach(el => el.style.fontFamily = baseFont);
+
+  // Font size
+  const fs = c('font_size');
+  document.getElementById('hero-title').style.fontSize = `${fs * 2}px`;
+  document.querySelectorAll('h2').forEach(h => h.style.fontSize = `${fs * 1.3}px`);
+  document.querySelectorAll('h3').forEach(h => h.style.fontSize = `${fs * 1.1}px`);
+}
+
+function mapToCapabilities(config) {
+  const c = key => config[key] || defaultConfig[key];
+  const mut = (key) => ({
+    get: () => c(key),
+    set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+  });
+  return {
+    recolorables: [mut('background_color'), mut('surface_color'), mut('text_color'), mut('primary_color'), mut('accent_color')],
+    borderables: [],
+    fontEditable: mut('font_family'),
+    fontSizeable: mut('font_size'),
+  };
+}
+
+function mapToEditPanelValues(config) {
+  const c = key => config[key] || defaultConfig[key];
+  return new Map([
+    ['event_title', c('event_title')],
+    ['ministry_name', c('ministry_name')],
+    ['school_name', c('school_name')],
+    ['principal_name', c('principal_name')],
+    ['school_location', c('school_location')],
+  ]);
+}
+
+window.elementSdk.init({ defaultConfig, onConfigChange, mapToCapabilities, mapToEditPanelValues });
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f1e54adb1969355',t:'MTc3NzEzMDQxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
